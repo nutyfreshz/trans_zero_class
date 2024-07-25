@@ -9,15 +9,15 @@ uploaded_file = st.sidebar.file_uploader("Upload a Excel file", type=["xlsx"])
 st.sidebar.header("Part 1.1) Enter Sheet name")
 sheet_name_ex = st.sidebar.text_input("Enter Sheet name in Excel")
 
-df = pd.read_excel(uploaded_file
-                     , sheet_name = sheet_name_ex)
-
 st.sidebar.header("Part 1.2) Select Columns to Classify Topics")
 cols_option = st.sidebar.selectbox("Select Columns", df.columns.tolist())
 
 st.sidebar.header("Part 2) Enter Topics")
 text_label = st.sidebar.text_input("Enter Topics split with comma e.g. positive,negative")
 text_list = text_label.split(",")[:-1]
+
+df = pd.read_excel(uploaded_file
+                     , sheet_name = sheet_name_ex)
 
 st.markdown("### Data Sample")
 st.write(df.head())
