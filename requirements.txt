@@ -4,6 +4,6 @@ streamlit
 transformers==4.38.1
 torch==2.2.1
 tokenizers==0.15.2
-numpy==1.21.5
-pandas==1.4.4
+numpy
+pandas
 sacremoses
