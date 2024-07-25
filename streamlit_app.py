@@ -6,8 +6,8 @@ import numpy as np
 st.sidebar.header("Part 1.0) Upload XLSX Data")
 uploaded_file = st.sidebar.file_uploader("Upload a Excel file", type=["csv"])
 
-st.sidebar.header("Part 1.1) Enter Sheet name")
-sheet_name_ex = st.sidebar.text_input("Enter Sheet name in csv")
+# st.sidebar.header("Part 1.1) Enter Sheet name")
+# sheet_name_ex = st.sidebar.text_input("Enter Sheet name in csv")
 
 df = pd.read_csv(uploaded_file)
 
