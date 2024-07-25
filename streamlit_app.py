@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-
-from transformers import pipeline, MarianMTModel, MarianTokenizer, AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
 from langdetect import detect
+import warnings
+
+warnings.filterwarnings("ignore", category=FutureWarning)  # Ignore FutureWarnings for deprecated features
 
 # Initialize tokenizer and model for translation
 tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-th-en")
@@ -26,29 +28,28 @@ if uploaded_file:
     
     st.sidebar.header("Part 2) Enter Topics")
     text_label = st.sidebar.text_input("Enter Topics split with comma e.g. positive,negative")
-    text_list = text_label.split(",")  # Split the text properly
+    text_list = [label.strip() for label in text_label.split(",") if label.strip()]  # Ensure labels are stripped and not empty
     
     def translate_text(text):
-        # Detect the language of the text
-        language = detect(text)
-    
-        # If the text is in English, return it as is
+        if not text or pd.isna(text):
+            return "Empty or NaN text"
+
+        try:
+            language = detect(text)
+        except Exception as e:
+            return f"Detection error: {e}"
+        
         if language == 'en':
             return text
-    
-        # If the text is in Thai, translate it
+        
         if language == 'th':
-            # Tokenize the text
             translated_tokens = model.generate(**tokenizer(text, return_tensors="pt"))
-            # Decode the translated tokens
             translated_text = tokenizer.decode(translated_tokens[0], skip_special_tokens=True)
             return translated_text
-    
-        # If the text is in neither English nor Thai, handle accordingly
+        
         return "Unsupported language"
 
-    # Apply the translation function
-    df['cmnt_new'] = df[cols_option].apply(translate_text)
+    df['cmnt_new'] = df[cols_option].astype(str).apply(translate_text)  # Ensure column values are strings
 
     def predict_sentiment(df, text_column, text_labels):
         result_list = []
