@@ -14,8 +14,8 @@ model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-th-en")
 # Initialize classifier
 classifier = pipeline("zero-shot-classification", model="MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli")
 
-st.sidebar.header("Part 1.0) Upload XLSX Data")
-uploaded_file = st.sidebar.file_uploader("Upload an Excel file", type=["csv"])
+st.sidebar.header("Part 1.0) Upload CSV Data")
+uploaded_file = st.sidebar.file_uploader("Upload an CSV file", type=["csv"])
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
@@ -23,8 +23,8 @@ if uploaded_file:
     st.markdown("### Data Sample")
     st.write(df.head())
     
-    st.sidebar.header("Part 1.2) Select Columns to Classify Topics")
-    cols_option = st.sidebar.selectbox("Select Columns", df.columns.tolist())
+    # st.sidebar.header("Part 1.2) Select Columns to Classify Topics")
+    # cols_option = st.sidebar.selectbox("Select Columns", df.columns.tolist())
     
     st.sidebar.header("Part 2) Enter Topics")
     text_label = st.sidebar.text_input("Enter Topics split with comma e.g. positive,negative")
@@ -49,7 +49,7 @@ if uploaded_file:
         
         return "Unsupported language"
 
-    df['cmnt_new'] = df[cols_option].astype(str).apply(translate_text)  # Ensure column values are strings
+    df['cmnt_new'] = df['target'].astype(str).apply(translate_text)  # Ensure column values are strings
 
     def predict_sentiment(df, text_column, text_labels):
         result_list = []
