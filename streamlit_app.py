@@ -4,10 +4,15 @@ import pandas as pd
 import numpy as np
 
 st.sidebar.header("Part 1.0) Upload XLSX Data")
-uploaded_file = st.sidebar.file_uploader("Upload a Excel file", type=["xlsx"])
+uploaded_file = st.sidebar.file_uploader("Upload a Excel file", type=["csv"])
 
 st.sidebar.header("Part 1.1) Enter Sheet name")
-sheet_name_ex = st.sidebar.text_input("Enter Sheet name in Excel")
+sheet_name_ex = st.sidebar.text_input("Enter Sheet name in csv")
+
+df = pd.read_csv(uploaded_file)
+
+st.markdown("### Data Sample")
+st.write(df.head())
 
 st.sidebar.header("Part 1.2) Select Columns to Classify Topics")
 cols_option = st.sidebar.selectbox("Select Columns", df.columns.tolist())
@@ -16,11 +21,6 @@ st.sidebar.header("Part 2) Enter Topics")
 text_label = st.sidebar.text_input("Enter Topics split with comma e.g. positive,negative")
 text_list = text_label.split(",")[:-1]
 
-df = pd.read_excel(uploaded_file
-                     , sheet_name = sheet_name_ex)
-
-st.markdown("### Data Sample")
-st.write(df.head())
 
 ###########################################################
 
