@@ -3,6 +3,13 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+from transformers import pipeline
+classifier = pipeline("zero-shot-classification", model="MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli")
+from transformers import MarianMTModel, MarianTokenizer
+
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import torch
+
 st.sidebar.header("Part 1.0) Upload XLSX Data")
 uploaded_file = st.sidebar.file_uploader("Upload a Excel file", type=["csv"])
 
@@ -48,10 +55,6 @@ def translate_text(text):
 df['cmnt_new'] = df[cols_option].apply(translate_text)
 
 ###########################################################
-
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-import torch
-from langdetect import detect
 
 # Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-th-en")
