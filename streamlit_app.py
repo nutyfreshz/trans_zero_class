@@ -15,7 +15,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-th-en")
 classifier = pipeline("zero-shot-classification", model="MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli")
 
 st.sidebar.header("Part 1.0) Upload CSV Data")
-uploaded_file = st.sidebar.file_uploader("Upload an CSV file", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("Upload a CSV file", type=["csv"])
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
@@ -37,7 +37,7 @@ if uploaded_file:
         try:
             language = detect(text)
         except Exception as e:
-            return f"Detection error: {e}"
+            return "Detection error: {e}"
         
         if language == 'en':
             return text
@@ -49,6 +49,7 @@ if uploaded_file:
         
         return "Unsupported language"
 
+    # Translate the selected column
     df['cmnt_new'] = df[cols_option].astype(str).apply(translate_text)  # Ensure column values are strings
 
     def predict_sentiment(df, text_column, text_labels):
@@ -63,8 +64,10 @@ if uploaded_file:
         result_df = pd.merge(df, result_df, left_on=text_column, right_on="sequence", how="left")
         return result_df
 
+    # Uncomment the following line to run sentiment prediction
     # results_df = predict_sentiment(df=df, text_column='cmnt_new', text_labels=text_list)
     
     st.markdown("### Data Output")
     st.write(df.head())
+    # Uncomment the following line to display sentiment prediction results
     # st.write(results_df.head())
