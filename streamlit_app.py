@@ -24,7 +24,9 @@ if uploaded_file:
     st.write(df.head())
     
     st.sidebar.header("Part 1.2) Select Columns to Classify Topics")
-    cols_option = st.sidebar.selectbox("Select Columns", df.columns.tolist())
+    # cols_option = st.sidebar.selectbox("Select Columns", df.columns.tolist())
+    cols_option = st.sidebar.text_input("Enter columns to translate and classify topic")
+
     
     st.sidebar.header("Part 2) Enter Topics")
     text_label = st.sidebar.text_input("Enter Topics split with comma e.g. positive,negative")
