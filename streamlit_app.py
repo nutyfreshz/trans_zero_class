@@ -63,7 +63,8 @@ if uploaded_file:
         result_df = pd.merge(df, result_df, left_on=text_column, right_on="sequence", how="left")
         return result_df
 
-    results_df = predict_sentiment(df=df, text_column='cmnt_new', text_labels=text_list)
+    # results_df = predict_sentiment(df=df, text_column='cmnt_new', text_labels=text_list)
     
     st.markdown("### Data Output")
-    st.write(results_df.head())
+    st.write(df.head())
+    # st.write(results_df.head())
